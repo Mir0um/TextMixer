@@ -32,3 +32,4 @@ Les contributions sont les bienvenues ! Veuillez créer une pull request pour pr
 
 Ce projet a été créé par <font color="purple">Miroum</font>
 
+Enjoy!
