@@ -22,7 +22,7 @@ Pour lancer le projet, veuillez exécuter la commande suivante dans votre termin
 
 ## Avertissement
 
-Ce projet est destiné à des fins éducatives et ne doit pas être utilisé à des fins malveillantes.
+Ce projet est destiné à des fins éducatives et ne doit pas être utilisé à des fins malveillantes. Le résultat produit par le projet ne doit pas être monétisé ou être excusé à des fins commerciales.
 
 ## Contribuer
 
