@@ -1,6 +1,10 @@
 # TexrMixer
 
-TexrMixer est un projet Python qui permet de mélanger des textes. Ce projet contient 5 fichiers. 
+L'objectif de TextMixeur est de vous aider à créer des textes amusants en mélangeant les mots et en altérant la structure des phrases, ce qui peut conduire à des résultats surprenants et hilarants. Utilisez-le pour vous amuser en réécrivant des textes, ou pour ajouter une touche d'humour à vos propres écrits.
+
+Son fonctionnement est inspiré des traductions automatiques, qui ont tendance à transformer les textes et les rendre moins cohérents.
+
+Nous espérons que vous passerez un bon moment en utilisant TextMixeur, et que vous en apprécierez les fonctionnalités.
 
 ## Installation
 
