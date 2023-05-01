@@ -36,10 +36,13 @@ def audio_player(audio_file):
     st.markdown(f'<audio controls autoplay src="data:audio/mp3;base64,{encoded_audio}" > </audio>', unsafe_allow_html=True)
 
 def translate(text, target_language, source=None):
+    if source is None:
+        source = "auto"
+
     url = 'https://translate.googleapis.com/translate_a/single'
     params = {
-        'client': 'gtx',
-        'sl': 'auto',
+        'client': '1f2a950d-9eaa-4e56-85f2-c77c70b3d3f8',
+        'sl': source,
         'tl': target_language,
         'dt': 't',
         'q': text
@@ -59,7 +62,7 @@ def transformations(user_text,mod):
     formatted_date_time = now.strftime("%d/%m/%Y %H:%M:%S")
 
     start_time = time.time()
-    print("\n\n" + formatted_date_time+ "=" * 20)
+    print(formatted_date_time, [mod[5:11]] , (user_text if len(user_text) <= 50 else user_text[:50] + "..."))
 
     if mod != "Mode normal.":
         histo = {}
@@ -79,7 +82,7 @@ def transformations(user_text,mod):
         progress = 100 - (((len(list(lang.keys())) - count) / len(list(lang.keys()))) * 100 )
         #print(formatted_date_time,round(progress,3),'%', end="\r")
         promt = str(round(progress,2)) +"%"
-        progress_bar.progress(round(progress),text=promt ) #text="Cela peut prendre quelques minutes.")
+        progress_bar.progress(round(progress),text=promt )
 
 
         if mod != "Mode normal.":
@@ -122,7 +125,7 @@ def transformations(user_text,mod):
     with open("Log.json", "a", encoding='utf-8') as fichier:
         log = {}
         log["start_time"] = formatted_date_time
-        log["mod"] = mod
+        log["mod"] = mod[5:11]
         log["input"] = user_text_old
         log["output"] = user_text
         log["Executing_time"] = time.time() - start_time
