@@ -26,4 +26,5 @@ Les contributions sont les bienvenues ! Veuillez créer une pull request pour pr
 
 ## Auteur
 
-Ce projet a été créé par [votre nom ou pseudo].
+Ce projet a été créé par <font color="purple">Miroum</font>
+
