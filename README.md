@@ -13,7 +13,7 @@ Pour installer les paquets nécessaires, veuillez exécuter la commande suivante
 
 `pip install -r requirements.txt`
 
-## Utilisation
+## lancer
 
 Pour lancer le projet, veuillez exécuter la commande suivante dans votre terminal :
 
