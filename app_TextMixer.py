@@ -1,11 +1,12 @@
 import json
 import os
+import requests
 import streamlit as st
-from Traduction import translate
 import base64
-from text_to_speech import text_to_audio as TTS
 import time
 import datetime
+import tempfile
+from gtts import gTTS
 
 
 with open('config.json', 'r', encoding='utf-8') as file:
@@ -23,10 +24,34 @@ def sec_to_min_sec(seconds):
         remaining_seconds = seconds % 60
         return (f":green[{round(minutes)}] minutes et :green[{round(remaining_seconds,2)}] secondes")
 
+def text_to_audio(text, lang):
+    tts = gTTS(text, lang=lang)
+    with tempfile.NamedTemporaryFile(delete=False) as fp:
+        temp_file = fp.name
+    tts.save(temp_file)
+    return temp_file
 def audio_player(audio_file):
     audio_bytes = open(audio_file, "rb").read()
     encoded_audio = base64.b64encode(audio_bytes).decode()
     st.markdown(f'<audio controls autoplay src="data:audio/mp3;base64,{encoded_audio}" > </audio>', unsafe_allow_html=True)
+
+def translate(text, target_language, source=None):
+    url = 'https://translate.googleapis.com/translate_a/single'
+    params = {
+        'client': 'gtx',
+        'sl': 'auto',
+        'tl': target_language,
+        'dt': 't',
+        'q': text
+    }
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        translated_text = ""
+        for sentence in response.json()[0]:
+            translated_text += sentence[0]
+        return translated_text
+    else:
+        return None
 
 def transformations(user_text,mod):
     user_text_old =user_text
@@ -72,7 +97,7 @@ def transformations(user_text,mod):
     st.success('Traitement terminé!')
     st.header("resulta:")
 
-    audio_file = TTS(user_text, "fr")
+    audio_file = text_to_audio(user_text, "fr")
     audio_player(audio_file)
     os.remove(audio_file)
 
