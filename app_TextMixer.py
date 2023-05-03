@@ -87,7 +87,7 @@ def transformations(user_text, mod):
     progress_bar.progress(0, text="0.00%")
 
     for count, i in enumerate(list(lang.keys())):
-
+        
         user_text = translate(user_text, i, old_lang)
 
         progress = 100 - (((len(list(lang.keys())) - count) / len(list(lang.keys()))) * 100)
@@ -170,17 +170,19 @@ def app():
                 try:
                     transformations(user_text, mod)
                 except Exception as error:
-                    with open("error.json", "a", encoding='utf-8') as fichier:
-                        log = {}
-                        log["erreur"] = {}
-                        log["erreur"]["uuid"] = uuid
-                        log["erreur"]["text"] = user_text
-                        log["erreur"]["mode"] = mod
-                        log["erreur"]["erre"] = error
-                        json_log = json.dumps(log)
-                        fichier.write(str(json_log) + "\n")
+                    erreur = {}
+                    erreur["erreur"] = {}
+                    erreur["erreur"]["uuid"] = str(uuid)
+                    erreur["erreur"]["text"] = user_text
+                    erreur["erreur"]["mode"] = mod
+                    erreur["erreur"]["erre"] = str(error)
+                    st.write(erreur)
+                    with open("error_lod.json", "a", encoding='utf-8') as fichier:
 
-                    st.error(f"Une erreur s'est produite nous nous excusons Pour la gêne occasionnée voici votre code erreur:{error} et votre identifiant du suivi:{uuid} ",icon="🚨")
+                        fichier.write(str(erreur) + "\n")
+
+                    st.error(f"Une erreur s'est produite nous nous excusons Pour la gêne occasionnée voici votre code erreur: \":blue[{error}]\" et votre identifiant du suivi: \":blue[{uuid}]\" ",icon="🚨")
+                    st.write(f"Le code derrière indique le problème rencontré et l'identifiant du suivi indique le code donnez à votre erreur si vous souhaitez en savoir Transmettez l'identifiant de suivi.")
 
 def info():
     st.title("info")
