@@ -136,7 +136,6 @@ def transformations(user_text, mod, formatted_date_time):
 
     with open("Log.json", "a", encoding='utf-8') as fichier:
         log = {}
-        log["uuid"] = str(uuid)
         log["start_time"] = str(start_time)
         log["mod"] = mod[5:11]
         log["input"] = user_text_old
