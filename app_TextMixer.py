@@ -68,13 +68,13 @@ def translate(text, target_language, source=None):
         return None
 
 
-def transformations(user_text, mod):
+def transformations(user_text, mod, formatted_date_time):
+    start_time = time.time()
+
     user_text_old = user_text
     now = datetime.datetime.now()
-    formatted_date_time = now.strftime("%d/%m/%Y %H:%M:%S")
 
     start_time = time.time()
-    print(formatted_date_time, [mod[5:11]], (user_text if len(user_text) <= 50 else user_text[:50] + "..."))
 
     if mod != "Mode normal.":
         histo = {"start": {}}
@@ -87,7 +87,7 @@ def transformations(user_text, mod):
     progress_bar.progress(0, text="0.00%")
 
     for count, i in enumerate(list(lang.keys())):
-        
+
         user_text = translate(user_text, i, old_lang)
 
         progress = 100 - (((len(list(lang.keys())) - count) / len(list(lang.keys()))) * 100)
@@ -114,7 +114,6 @@ def transformations(user_text, mod):
 
     audio_file = text_to_audio(user_text, "fr")
     st.audio(audio_file,format="audio/wav")
-    st.text(audio_file) #dev
     os.remove(audio_file)
     st.balloons()
 
@@ -137,8 +136,8 @@ def transformations(user_text, mod):
 
     with open("Log.json", "a", encoding='utf-8') as fichier:
         log = {}
-        log["uuid"] = uuid
-        log["start_time"] = formatted_date_time
+        log["uuid"] = str(uuid)
+        log["start_time"] = str(start_time)
         log["mod"] = mod[5:11]
         log["input"] = user_text_old
         log["output"] = user_text
@@ -166,22 +165,30 @@ def app():
             st.info("Vous devez entrer un texte", icon="ℹ️")
         else:
             with st.spinner('Transformation en cours...'):
+                now = datetime.datetime.now()
+                formatted_date_time = now.strftime("%d/%m/%Y %H:%M:%S")
+
+                print(formatted_date_time, [mod[5:11]], (user_text if len(user_text) <= 50 else user_text[:50] + "..."))
                 uuid = generate_uuid()
                 try:
-                    transformations(user_text, mod)
+                    transformations(user_text, mod, formatted_date_time)
                 except Exception as error:
                     erreur = {}
                     erreur["erreur"] = {}
                     erreur["erreur"]["uuid"] = str(uuid)
+                    erreur["erreur"]["start_time"] = formatted_date_time
+                    now = datetime.datetime.now()
+                    errer_tim = now.strftime("%d/%m/%Y %H:%M:%S")
+                    erreur["erreur"]["errer_tim"] = str(errer_tim)
                     erreur["erreur"]["text"] = user_text
                     erreur["erreur"]["mode"] = mod
                     erreur["erreur"]["erre"] = str(error)
-                    st.write(erreur)
+                    print(f"ERREUR {formatted_date_time} to {uuid},cause : {error}")
                     with open("error_lod.json", "a", encoding='utf-8') as fichier:
 
                         fichier.write(str(erreur) + "\n")
 
-                    st.error(f"Une erreur s'est produite nous nous excusons Pour la gêne occasionnée voici votre code erreur: \":blue[{error}]\" et votre identifiant du suivi: \":blue[{uuid}]\" ",icon="🚨")
+                    st.error(f"Une erreur s'est produite le {erreur['erreur']['errer_tim']} nous nous excusons Pour la gêne occasionnée; Voici Ce qui s'est passé : \":blue[{error}]\" ; Identifiant du suivi de l'erreur: \":blue[{uuid}]\" ",icon="🚨")
                     st.write(f"Le code derrière indique le problème rencontré et l'identifiant du suivi indique le code donnez à votre erreur si vous souhaitez en savoir Transmettez l'identifiant de suivi.")
 
 def info():
